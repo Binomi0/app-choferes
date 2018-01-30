@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, Easing, Animated, Image, Button } from 'react-native';
-import { LoginScreen, PedidosScreen, PerfilScreen, HomeScreen, VehiculosScreen, HorariosScreen } from '../screens';
+import { LoginScreen, PedidosScreen, PerfilScreen, HomeScreen, VehiculosScreen, MapaScreen } from '../screens';
 import { TabNavigator, StackNavigator } from 'react-navigation';
 import { BottomNavigation,  Toolbar,  } from 'react-native-material-ui';
 import PedidosTabs from './pedidosTabs';
@@ -33,10 +33,10 @@ export default MainNav = StackNavigator ({
             title: 'Vehículos'
         })
     },
-    Horarios: {
-        screen: HorariosScreen,
+    Mapa: {
+        screen: MapaScreen,
         navigationOptions: () => ({
-            title: 'Horarios'
+            title: 'Mapa'
         })
     }
 },{

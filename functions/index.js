@@ -19,3 +19,11 @@ export function isUserAuth() {
         return user
     }) 
 }
+
+export function userLogOut() {
+    firebase.auth().signOut().then(() => {
+        return true
+    })
+    .catch(() => false)
+
+}
