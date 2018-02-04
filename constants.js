@@ -1,1 +1,4 @@
 export const SET_USER_LOCATION = 'SET_USER_LOCATION'
+export const SET_USER = 'SET_USER'
+export const UPDATE_POSITION = 'UPDATE_POSITION'
+export const UPDATE_MARKER = 'UPDATE_MARKER'

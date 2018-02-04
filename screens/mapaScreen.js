@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { View, Text, Button } from 'react-native';
 import { TabNavigator } from 'react-navigation';
@@ -10,7 +10,14 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Divider } from 'react-native-material-ui';
 import mainNav from '../navigators/mainNav';
 import MyMap from '../componentes/mapa';
+import { UPDATE_POSITION } from '../constants';
 // import markers from '../componentes/markers';
+
+const geolocationOptions = {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 0
+};
 
 class MisPedidos extends Component {
     render() {
@@ -22,44 +29,49 @@ class MisPedidos extends Component {
     }
 }
 
-class UserViewMap  extends Component {
+class UserViewMap  extends Component {  
 
-    componentWillMount() {
-        let { position } = this.props
-        console.log('Position:', position)
-        
-    }    
+    componentDidMount() {        
+        this.geoLocateUser()
+    }
+    
+    geoLocateUser() {  
 
-    _handleMapRegionChange = mapRegion => {
-        this.props.setLocation(mapRegion)
-    };
-
-    _handleSaveCoords() {
-        return true
+        error = err => {
+            console.warn('ERROR(' + err.code + '): ' + err.message);
+        }
+        navigator.geolocation.getCurrentPosition((position) => this.props.setLocation(position), error, geolocationOptions);
     }
 
+
+    updateMap() {
+        return <MyMap />
+    }
+    
+
     render() {
-        let { position } = this.props
         return (
-            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                <Text style={{
-                    fontSize: 18,
-                    fontWeight: 'bold'
-                }} >Aquí encontrarás tus pedidos pendientes.</Text>
-                <MyMap mapRegion={position} _handleMapRegion={this._handleSaveCoords} markers={[]}/>
-                
+            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', width: '100%'}}>
+                <Text style={{ fontSize: 18, fontWeight: 'bold'  }} >Aquí encontrarás tus pedidos pendientes.</Text>
+                {this.updateMap()}
             </View>
         )
     }
 }
 
-// UserViewMap.propTypes = {
-//     position: PropTypes.object.isRequired,
-//     setLocation: PropTypes.func.isRequired
-// }
+UserViewMap.propTypes = {
+    setLocation: PropTypes.func.isRequired
+}
 
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setLocation: (position) => {
+            dispatch({
+                type: UPDATE_POSITION,
+                payload: position.coords
+            })
+        }
+    }
+}
 
-
-
-
-export default UserViewMap;
+export default connect(null, mapDispatchToProps)(UserViewMap);

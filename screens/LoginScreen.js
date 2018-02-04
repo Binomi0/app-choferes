@@ -5,6 +5,7 @@ import { TextInput, Text, View, FlatList, StyleSheet, TabBarIOS, ScrollView, Ima
 import FadeInView from '../componentes/FadeInView';
 import { Button, ActionButton } from 'react-native-material-ui';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { SET_USER } from '../constants'
 
 const myIcon = (name, size, color) => <Icon name={name} size={size} color={color} />
 
@@ -34,7 +35,6 @@ class LoginScreen extends React.Component {
         let data = firebase.database().ref('users/' + user.uid)
         data.on('value', snapshot => {
           let userData = snapshot.val()
-          this.props.setPosition(userData.position)
           this.props.setUser(user.uid, user.refreshToken, userData.role)
         })
       }
@@ -134,16 +134,10 @@ const mapDispatchToProps = dispatch => {
   return {
     setUser: (uid, refreshToken, role) => {
       dispatch({
-          type: 'SET_USER',
-          payload: { uid: uid, refreshToken: refreshToken, role: role }
-        })
-      },
-    setPosition: position => {
-      dispatch({
-        type: 'UPDATE_POSITION',
-        payload: position
+        type: SET_USER,
+        payload: { uid: uid, refreshToken: refreshToken, role: role }
       })
-    }    
+    },      
   }
 }
 

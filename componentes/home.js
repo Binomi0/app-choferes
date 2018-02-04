@@ -20,7 +20,7 @@ const mapStateToProps = state => {
 }
 
 Home.propTypes = {
-    uid: PropTypes.string
+    uid: PropTypes.string.isRequired
 }
 
 export default connect(mapStateToProps)(Home);
