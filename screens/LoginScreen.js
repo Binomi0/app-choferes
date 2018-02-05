@@ -55,7 +55,7 @@ class LoginScreen extends React.Component {
         this.props.setUser(user.uid, user.token, 'chofer')
       }).catch(err => {
         if (err.code === "auth/user-not-found") {
-          let r = confirm('¿Quieres crear una cuenta nueva con el correo: ', email)
+          let r = confirm('¿Quieres crear una cuenta nueva con el correo:', email, '?')
           if (r) createnewUser(email, password)
         } else {
           alert(err.code)

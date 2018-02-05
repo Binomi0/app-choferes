@@ -30,29 +30,47 @@ class MisPedidos extends Component {
 }
 
 class UserViewMap  extends Component {  
-
-    componentDidMount() {        
-        this.geoLocateUser()
-    }
     
-    geoLocateUser() {  
-
-        error = err => {
-            console.warn('ERROR(' + err.code + '): ' + err.message);
-        }
-        navigator.geolocation.getCurrentPosition((position) => this.props.setLocation(position), error, geolocationOptions);
-    }
-
-
     updateMap() {
         return <MyMap />
     }
-    
+
+    _handleSaveCoords = () => {
+        // console.log(this.props)
+        let { screenProps, position } = this.props
+        let data = {
+            uid: screenProps,
+            name: 'Adolfo',
+            lat: position.latitude,
+            lng: position.longitude,
+            speed: position.speed
+        }
+        let url = 'https://contenedoressatur.es/wp-json/ubicaciones-satur/v1/choferes'
+        fetch(url, {
+            'method': 'POST',
+            'headers': new Headers({
+                'Content-Type': 'application/json'
+            }),
+            'body': JSON.stringify(data)
+        })
+            .then(response => response.json)
+            .then(data => {
+                if (data.status === "OK") {
+                    console.log(data)
+                } else {
+                    console.log(data)                    
+                }
+            })
+    }
+
 
     render() {
         return (
             <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', width: '100%'}}>
                 <Text style={{ fontSize: 18, fontWeight: 'bold'  }} >Aquí encontrarás tus pedidos pendientes.</Text>
+                <View style={{ marginTop: 10, marginBottom: 10 }}>
+                    <Button onPress={this._handleSaveCoords} title="Guardar Ubicación"></Button>
+                </View>
                 {this.updateMap()}
             </View>
         )
@@ -60,7 +78,14 @@ class UserViewMap  extends Component {
 }
 
 UserViewMap.propTypes = {
-    setLocation: PropTypes.func.isRequired
+    setLocation: PropTypes.func.isRequired,
+    position: PropTypes.object.isRequired,
+}
+
+const mapStateToProps = (state) => {
+    return {
+        position: state.locations.position,
+    }
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -74,4 +99,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(null, mapDispatchToProps)(UserViewMap);
+export default connect(mapStateToProps, mapDispatchToProps)(UserViewMap);

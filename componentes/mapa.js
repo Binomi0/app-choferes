@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
-import { View, Text, Button } from 'react-native';
+import { View, Text } from 'react-native';
 import { MapView } from "expo";
 import { connect } from 'react-redux';
 import { UPDATE_POSITION, UPDATE_MARKER } from '../constants';
@@ -8,12 +8,8 @@ import { UPDATE_POSITION, UPDATE_MARKER } from '../constants';
 
 class Mapa extends Component {
 
-    _handleSaveCoords() {
-        
-    }
-
     render() {
-        console.log(this.props)
+        // 
         let { setLocation, setMarker, position, marker } = this.props
         // let { mapRegion } = this.state
         return (
@@ -39,9 +35,7 @@ class Mapa extends Component {
                         description='Mostrando la ubicación de las coordenadas actuales'
                     />
                 </MapView>
-                <View style={{ marginTop: 10, marginBottom: 10 }}>
-                    <Button onPress={this._handleSaveCoords} title="Guardar Ubicación"></Button>
-                </View>
+                
                 <View style={{ marginTop: 10, marginBottom: 10 }}>
                     <Text>{this.props.position.latitude} - {this.props.position.longitude}</Text>
                 </View>

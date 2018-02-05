@@ -2,8 +2,52 @@ import React, { Component } from 'react';
 import { Text, View, Easing, Animated, Image, Button, StyleSheet } from 'react-native';
 import { BottomNavigation, Toolbar } from 'react-native-material-ui';
 
+const geolocationOptions = {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 0
+};
 
 export default class HomeScreen extends Component {
+
+    componentDidMount() {        
+        this.geoLocateUser()
+    }
+    
+    geoLocateUser() {  
+        let { screenProps, position } = this.props
+        let url = 'https://contenedoressatur.es/wp-json/ubicaciones-satur/v1/choferes'
+
+        error = err => {
+            console.warn('ERROR(' + err.code + '): ' + err.message);
+        }        
+
+        this.watchId = navigator.geolocation.watchPosition(
+                (position) => {
+                let data = {
+                    uid: screenProps,
+                    name: 'Adolfo',
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                    speed: position.coords.speed
+                }
+                fetch(url, {
+                    'method': 'POST',
+                    'headers': new Headers({
+                        'Content-Type': 'application/json'
+                    }),
+                    'body': JSON.stringify(data)
+                })
+            }, 
+            error, 
+            geolocationOptions
+        );
+    }  
+    
+    componentWillUnmount() {        
+        navigator.geolocation.clearWatch(this.watchId)
+    }
+
     render() {
         let { navigation } = this.props
         return (
