@@ -8,6 +8,10 @@ import { UPDATE_POSITION, UPDATE_MARKER } from '../constants';
 
 class Mapa extends Component {
 
+    _handleSaveCoords() {
+        
+    }
+
     render() {
         console.log(this.props)
         let { setLocation, setMarker, position, marker } = this.props
