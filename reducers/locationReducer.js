@@ -1,8 +1,21 @@
 import { UPDATE_POSITION, UPDATE_MARKER } from '../constants'
 
 const location = {
-
-    position: {}
+    position: {
+        latitude: 0,
+        longitude: 0,
+        latitudeDelta: 0,
+        longitudeDelta: 0,
+        accuracy: 0,
+        altitude: 0,
+        altitudeAccuracy: 0,
+        speed: 0,
+        heading: -1
+    },
+    marker: {
+        longitude: -0.574234, 
+        latitude: 38.2085652
+    }
 };
 
 const locationReducer = (state = location, action) => {
@@ -10,14 +23,19 @@ const locationReducer = (state = location, action) => {
         case UPDATE_POSITION:
             return {
                 ...state,
-                position: action.payload 
+                position: {
+                    ...state.position,                    
+                    ...action.payload                    
+                }
             }
         case UPDATE_MARKER:
             return {
-                ...state,
-                marker: action.payload
-            }
-        
+                ...state,                    
+                marker: {
+                    ...state.marker,
+                    ...action.payload                
+                }
+            }        
         default:
             return state
     }
